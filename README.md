@@ -10,24 +10,37 @@ Therefore, the real-time estimation and monitoring of system inertia constitute 
 ## Table of Contents
   #repository-structure
 
- ├── Simulink_Models/ # MATLAB/Simulink power system models
-  │ ├── Scenario_1_power_system_modeling.slx # 2-area system: reheat + non-reheat vs. non-reheat + hydro
-  │ ├── Scenario_1_power_system_modeling.slxc # Compiled model for Scenario 1
-  │ ├── Scenario_2_power_system_modeling.slx # 2-area system: 2×hydro vs. reheat + non-reheat
-  │ ├── Scenario_2_power_system_modeling.slxc # Compiled model for Scenario 2
-  │ ├── Scenario_3_power_system_modeling.slx # 2-area system: reheat + hydro vs. reheat + hydro
-  │ ├── Scenario_3_power_system_modeling.slxc # Compiled model for Scenario 3
-  │ ├── Scenario_4_power_system_modeling.slx # 3-area interconnected system
-  │ └── Scenario_4_power_system_modeling.slxc # Compiled model for Scenario 4
-├── data/ # [TO BE ADDED] Simulation datasets
-├── src/ # [TO BE ADDED] Source code
-├── notebooks/ # [TO BE ADDED] Jupyter notebooks
-├── results/ # [TO BE ADDED] Results and visualizations
-├── docs/ # [TO BE ADDED] Documentation
-├── requirements.txt # [TO BE ADDED] Python dependencies
+thesis-inertia-ml/
+├── Simulink_Models/ # MATLAB/Simulink power system models
+│ ├── Scenario_1_power_system_modeling.slx # 2-area: reheat + non-reheat vs. non-reheat + hydro
+│ ├── Scenario_1_power_system_modeling.slxc
+│ ├── Scenario_2_power_system_modeling.slx # 2-area: 2×hydro vs. reheat + non-reheat
+│ ├── Scenario_2_power_system_modeling.slxc
+│ ├── Scenario_3_power_system_modeling.slx # 2-area: reheat + hydro vs. reheat + hydro
+│ ├── Scenario_3_power_system_modeling.slxc
+│ ├── Scenario_4_power_system_modeling.slx # 3-area interconnected system
+│ └── Scenario_4_power_system_modeling.slxc
+├── MATLAB_Scripts/ # MATLAB scripts for Monte Carlo simulations
+│ ├── simulation_scenario_1_2_3.m # Runs Monte Carlo for Scenarios 1, 2, and 3
+│ └── simulation_3_Area_scenario.m # Runs Monte Carlo for 3-area Scenario 4
+├── Data_Processing/ # Python scripts for data preprocessing
+│ ├── process_scenario_1.py # Feature extraction for Scenario 1
+│ ├── process_scenario_2.py # Feature extraction for Scenario 2
+│ ├── process_scenario_3.py # Feature extraction for Scenario 3
+│ └── process_scenario_4.py # Feature extraction for Scenario 4
+├── Processed_Datasets/ # Extracted features in CSV format
+│ ├── simulink_features_multiple_power_sources.csv # Scenario 1
+│ ├── simulink_features_hydro_power_sources.csv # Scenario 2
+│ ├── simulink_features_2x{hydro+steam}_sources.csv # Scenario 3
+│ └── simulink_features_3area_multisource_3sources.csv # Scenario 4
+├── Jupyter_Notebooks/ # Complete ML analysis notebooks
+│ ├── Inertia_estimation_random_power_sources.ipynb # Scenario 1
+│ ├── Inertia_estimation_2_hydro_power_sources.ipynb # Scenario 2
+│ ├── Inertia_estimation_2x{hydro+steam}_power_sources.ipynb # Scenario 3
+│ └── Inertia_Estimation_multisource_3_Area_power_system.ipynb # Scenario 4
+├── docs/ # Additional documentation
+├── requirements.txt # Python dependencies
 └── README.md # This file
-
-
 
 ## Power System Scenarios
 
@@ -250,4 +263,4 @@ pip install numpy pandas scikit-learn matplotlib seaborn xgboost jupyter
 - [Citation](#citation)
 - [License](#license)
 
-## Repository Structure
+

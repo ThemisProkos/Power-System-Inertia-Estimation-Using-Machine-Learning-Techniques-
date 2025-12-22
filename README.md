@@ -35,11 +35,11 @@ thesis-inertia-ml/
 │   ├── simulink_features_2x{hydro+steam}_sources.csv         
 │   └── simulink_features_3area_multisource_3sources.csv      
 ├── Analysis_Notebooks/                       
-│   ├── Inertia_estimation_random_power_sources.ipynb         
-│   ├── Inertia_estimation_2_hydro_power_sources.ipynb        
-│   ├── Inertia_estimation_2x{hydro+steam}_power_sources.ipynb 
-│   └── Inertia_Estimation_multisource_3_Area_power_system.ipynb
-├── Thesis_English.pdf
+│   ├── Inertia_estimation_random_power_sources.ipynb  (scenario 1)      
+│   ├── Inertia_estimation_2_hydro_power_sources.ipynb  (scenario 2)   
+│   ├── Inertia_estimation_2x{hydro+steam}_power_sources.ipynb (scenario 3)
+│   └── Inertia_Estimation_multisource_3_Area_power_system.ipynb (scenario 4)
+├── Thesis_English.pdf (Thesis report)
 └── README.md
 ```
 
@@ -271,10 +271,10 @@ pip install numpy pandas scikit-learn matplotlib seaborn xgboost jupyter
   graph TD
       A[MATLAB Monte Carlo] --> B[.mat Simulation Data]
       B --> C{Jupyter Notebook}
-      C --> D[Feature Extraction]
+      C --> D[Feature Extraction  & CSV Export]
       D --> E[ML Training]
-      E --> F[Results & CSV Export]
-      F --> G[Processed Datasets/]
+      E --> F[Results]
+      F --> G[Error Visualization]
   ```
   
   Note: Due to their large size (~2GB per scenario), the .mat simulation data files are excluded from this repository. To access this data, you must generate it by running the MATLAB scripts as described below.

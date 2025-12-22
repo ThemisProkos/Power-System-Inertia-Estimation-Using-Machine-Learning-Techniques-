@@ -11,36 +11,33 @@ Therefore, the real-time estimation and monitoring of system inertia constitute 
   #repository-structure
 
 thesis-inertia-ml/
-├── Simulink_Models/ # MATLAB/Simulink power system models
-│ ├── Scenario_1_power_system_modeling.slx # 2-area: reheat + non-reheat vs. non-reheat + hydro
-│ ├── Scenario_1_power_system_modeling.slxc
-│ ├── Scenario_2_power_system_modeling.slx # 2-area: 2×hydro vs. reheat + non-reheat
-│ ├── Scenario_2_power_system_modeling.slxc
-│ ├── Scenario_3_power_system_modeling.slx # 2-area: reheat + hydro vs. reheat + hydro
-│ ├── Scenario_3_power_system_modeling.slxc
-│ ├── Scenario_4_power_system_modeling.slx # 3-area interconnected system
-│ └── Scenario_4_power_system_modeling.slxc
-├── MATLAB_Scripts/ # MATLAB scripts for Monte Carlo simulations
-│ ├── simulation_scenario_1_2_3.m # Runs Monte Carlo for Scenarios 1, 2, and 3
-│ └── simulation_3_Area_scenario.m # Runs Monte Carlo for 3-area Scenario 4
-├── Data_Processing/ # Python scripts for data preprocessing
-│ ├── process_scenario_1.py # Feature extraction for Scenario 1
-│ ├── process_scenario_2.py # Feature extraction for Scenario 2
-│ ├── process_scenario_3.py # Feature extraction for Scenario 3
-│ └── process_scenario_4.py # Feature extraction for Scenario 4
-├── Processed_Datasets/ # Extracted features in CSV format
-│ ├── simulink_features_multiple_power_sources.csv # Scenario 1
-│ ├── simulink_features_hydro_power_sources.csv # Scenario 2
-│ ├── simulink_features_2x{hydro+steam}_sources.csv # Scenario 3
-│ └── simulink_features_3area_multisource_3sources.csv # Scenario 4
-├── Jupyter_Notebooks/ # Complete ML analysis notebooks
-│ ├── Inertia_estimation_random_power_sources.ipynb # Scenario 1
-│ ├── Inertia_estimation_2_hydro_power_sources.ipynb # Scenario 2
-│ ├── Inertia_estimation_2x{hydro+steam}_power_sources.ipynb # Scenario 3
-│ └── Inertia_Estimation_multisource_3_Area_power_system.ipynb # Scenario 4
-├── docs/ # Additional documentation
-├── requirements.txt # Python dependencies
-└── README.md # This file
+├── Simulink_Models/                          # MATLAB/Simulink power system models
+│   ├── Scenario_1_power_system_modeling.slx  # 2-area: reheat + non-reheat vs. non-reheat + hydro
+│   ├── Scenario_1_power_system_modeling.slxc # Compiled model for Scenario 1
+│   ├── Scenario_2_power_system_modeling.slx  # 2-area: 2×hydro vs. reheat + non-reheat
+│   ├── Scenario_2_power_system_modeling.slxc # Compiled model for Scenario 2
+│   ├── Scenario_3_power_system_modeling.slx  # 2-area: reheat + hydro vs. reheat + hydro
+│   ├── Scenario_3_power_system_modeling.slxc # Compiled model for Scenario 3
+│   ├── Scenario_4_power_system_modeling.slx  # 3-area interconnected system
+│   └── Scenario_4_power_system_modeling.slxc # Compiled model for Scenario 4
+├── MATLAB_Scripts/                           # MATLAB scripts for Monte Carlo simulations
+│   ├── simulation_scenario_1_2_3.m           # Runs Monte Carlo for Scenarios 1, 2, and 3
+│   └── simulation_3_Area_scenario.m          # Runs Monte Carlo for 3-area Scenario 4
+├── Raw_Data_Examples/                        # Small sample .mat files (optional, for demonstration)
+├── Processed_Datasets/                       # Extracted features in CSV format (new training dataset)
+│   ├── simulink_features_multiple_power_sources.csv          # Scenario 1
+│   ├── simulink_features_hydro_power_sources.csv             # Scenario 2
+│   ├── simulink_features_2x{hydro+steam}_sources.csv         # Scenario 3
+│   └── simulink_features_3area_multisource_3sources.csv      # Scenario 4
+├── Analysis_Notebooks/                       # Complete integrated notebooks (feature extraction + ML)
+│   ├── Inertia_estimation_random_power_sources.ipynb         # Scenario 1: Full pipeline
+│   ├── Inertia_estimation_2_hydro_power_sources.ipynb        # Scenario 2: Full pipeline  
+│   ├── Inertia_estimation_2x{hydro+steam}_power_sources.ipynb # Scenario 3: Full pipeline
+│   └── Inertia_Estimation_multisource_3_Area_power_system.ipynb # Scenario 4: Full pipeline
+├── docs/                                     # Additional documentation
+├── requirements.txt                          # Python dependencies
+├── .gitignore                               # Excludes large .mat files
+└── README.md                                 # This file
 
 ## Power System Scenarios
 
@@ -259,8 +256,107 @@ pip install numpy pandas scikit-learn matplotlib seaborn xgboost jupyter
   
   These results demonstrate that machine learning, particularly MLP, provides highly accurate inertia estimation (< 5% error) across diverse power system configurations, offering a practical solution for real-time grid monitoring.
   
-- [How to Use](#how-to-use)
-- [Citation](#citation)
-- [License](#license)
+
+## How to Use
+
+  This project follows an integrated workflow where each Jupyter notebook performs both feature extraction from raw simulation data and machine learning analysis. Below is the complete process to reproduce all results.
+  
+  ### Complete Workflow Overview
+  
+  ```mermaid
+  graph TD
+      A[MATLAB Monte Carlo] --> B[.mat Simulation Data]
+      B --> C{Jupyter Notebook}
+      C --> D[Feature Extraction]
+      D --> E[ML Training]
+      E --> F[Results & CSV Export]
+      F --> G[Processed Datasets/]
+  ```
+  
+  Note: Due to their large size (~2GB per scenario), the .mat simulation data files are excluded from this repository. To access this data, you must generate it by running the MATLAB scripts as described below.
+  
+  
+# Step 1: Generate Simulation Data (MATLAB/Simulink)
+
+  Prerequisites
+
+  1.MATLAB Requirements: MATLAB R2020a or later with:
+    Simulink
+    Simscape Electrical Toolbox
+  2.File Setup: Ensure all Simulink model files (.slx) are in the Simulink_Models/ directory and are accessible from MATLAB's current working directory.
+
+  Running Monte Carlo Simulations
+
+  For Scenarios 1, 2, and 3 (2-Area Systems):
+
+  1.Open MATLAB and navigate to the MATLAB_Scripts/ directory.
+  2.Edit simulation_scenario_1_2_3.m to select your desired scenario by uncommenting the corresponding parameter lines:
+  
+ ```bash
+
+% ========== SCENARIO 1: Multiple Power Sources ==========
+% Uncomment lines for Scenario 1
+Patemeter1 = ...
+Parameter2 = ...
+...
+H1_range = [3, 8];
+H2_range = [3, 8];
+num_simulations = 1000;
+
+% ========== SCENARIO 2: Hydro Power Sources ==========
+% Uncomment lines  for Scenario 2
+Parameter1 = ...
+Parameter2 = ...
+...
+% H1_range = [3, 8];
+% H2_range = [3, 8];
+% num_simulations = 1000;
+
+% ========== SCENARIO 3: Hydro+Steam Sources ==========
+% Uncomment lines  for Scenario 3
+Parameter1 = ...
+Parameter2 = ...
+...
+% H1_range = [3, 8];
+% H2_range = [3, 8];
+% num_simulations = 1000;
+
+```
+
+   3. Run the script:
+```bash
+
+    simulation_scenario_1_2_3
+  
+  ```
+   4.The script will:
+    -Run 1000 Monte Carlo simulations for the selected scenario
+    -Vary inertia constants H₁ and H₂ within the range [3, 8] seconds
+    -Save the results as .mat files in your working directory
+    -Each simulation takes 2-4 hours depending on your hardware
+  
+  Important: Only uncomment ONE scenario at a time. To run a different scenario, re-comment the current one and uncomment the next.
+  
+   5. Repeat the proecess for the scenario 4
+     
+    - [Citation](#citation)
+    - [License](#license)
+
+# Step 2: Run Integrated Analysis (Jupyter Notebooks)
+
+  Each Jupyter notebook is self-contained and performs the complete analysis pipeline for its respective scenario.
+
+  Each notebook follows this sequence:
+
+  1. Load raw .mat files from MATLAB simulations
+  2. Extract statistical features from time-series signals (Δf₁, Δf₂, ΔP_tie)
+  3. Export processed data to CSV format
+  4. Create feature matrix with engineered statistical indicators
+  5. Preprocess the new dataset
+  6. Train 5 ML algorithms (MLP, Random Forest, XGBoost, SVR, Linear Regression)
+  7. Evaluate performance using R², RMSE, MAE, and MAPE metrics
+  8. Generate visualizations and result tables
 
 
+
+  

@@ -272,9 +272,10 @@ pip install numpy pandas scikit-learn matplotlib seaborn xgboost jupyter
       A[MATLAB Monte Carlo] --> B[.mat Simulation Data]
       B --> C{Jupyter Notebook}
       C --> D[Feature Extraction  & CSV Export]
-      D --> E[ML Training]
-      E --> F[Results]
-      F --> G[Error Visualization]
+      D --> E[New Dataset Preprocessing]
+      E --> F[ML Training]
+      F --> G[Results & Evaluation]
+      G --> H(Errors Visualization)
   ```
   
   Note: Due to their large size (~2GB per scenario), the .mat simulation data files are excluded from this repository. To access this data, you must generate it by running the MATLAB scripts as described below.
